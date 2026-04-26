@@ -20,38 +20,38 @@ pwd_context= CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str):
- return pwd_context.hash(password)
+    return pwd_context.hash(password)
 
 def verify_password(plain, hashed):
- return pwd_context.verify(plain, hashed)
+    return pwd_context.verify(plain, hashed)
 
 
 # Create access token
 def create_access_token(data: dict):
- to_encode= data.copy()
- expire= datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_TIME)
+    to_encode= data.copy()
+    expire= datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_TIME)
 
- to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire})
 
- encoded_jwt= jwt.encode(to_encode, SECURITY_KEY, algorithm=ALGORITHM)
+    encoded_jwt= jwt.encode(to_encode, SECURITY_KEY, algorithm=ALGORITHM)
 
- return encoded_jwt
+    return encoded_jwt
 
 
 
 @router.post("/register")
 def register(data: UserAuth):
- username= data.username
- password= data.password
- 
- if username in fake_users_db:
-  raise HTTPException(status_code=400, detail="User already exist")
- 
- hashed_password= hash_password(password)
- 
- fake_users_db[username]= {"username": username, "password":hashed_password}
- 
- return {"message": "User registered"}
+    username= data.username
+    password= data.password
+
+    if username in fake_users_db:
+        raise HTTPException(status_code=400, detail="User already exist")
+    
+    hashed_password= hash_password(password)
+    
+    fake_users_db[username]= {"username": username, "password":hashed_password}
+    
+    return {"message": "User registered"}
 
 
 
@@ -60,13 +60,7 @@ def login(data: LoginRequest):
 
     username = data.username
     password = data.password
-    print("REGISTER PASSWORD:", password)
-    print("PASSWORD TYPE:", type(password))
-    print("PASSWORD LENGTH:", len(password))
 
-    print("PASSWORD RECEIVED:", password)
-    print("TYPE:", type(password))
-    print("LENGTH:", len(password))
 
     user = fake_users_db.get(username)
 
