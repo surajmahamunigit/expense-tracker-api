@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 .venv/
+Java-to-Python/
+test.db
